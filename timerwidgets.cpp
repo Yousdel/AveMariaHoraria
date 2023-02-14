@@ -40,8 +40,8 @@ void TimerWidgets::activate()
 void TimerWidgets::update()
 {
     QDateTime curr = QDateTime::currentDateTime();
-    int minsToNextHour = 60 - curr.time().minute(),//60-curr.time().minute();
-            secsToNextMinute= 60 - curr.time().second();/*60 - curr.time().second();*/
+    int minsToNextHour = 59 - curr.time().minute(),//59-curr.time().minute();
+            secsToNextMinute= 59 - curr.time().second();/*59 - curr.time().second();*/
     if (minsToNextHour==0x0 && secsToNextMinute==0x0 && activated){
         t_sound.start(1500);
     }
