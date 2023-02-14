@@ -2,7 +2,7 @@
 
 #include <QLCDNumber>
 #include <QDateTime>
-#include <iostream>
+#include <QSound>
 
 
 TimerWidgets::TimerWidgets(QLCDNumber *minNumber, QLCDNumber *secsNumber, QObject *parent):
@@ -13,7 +13,7 @@ TimerWidgets::TimerWidgets(QLCDNumber *minNumber, QLCDNumber *secsNumber, QObjec
     connect(&t, &QTimer::timeout, this, [=](){update();});
     connect(&t_sound, &QTimer::timeout, this,[&](){
         ++i;
-        std::cout<<"\a";
+        QSound::play(":/Alarm05.wav");
         if (i==0xf){
             t_sound.stop();
             i=0x0;
