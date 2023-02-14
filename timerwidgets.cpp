@@ -19,7 +19,7 @@ TimerWidgets::TimerWidgets(QLCDNumber *minNumber, QLCDNumber *secsNumber, QObjec
             i=0x0;
         }
     });
-    t.start(1000);
+    t.start(0x3e8);/*t.start(1000);*/
 }
 
 void TimerWidgets::stopEverything()
@@ -40,10 +40,10 @@ void TimerWidgets::activate()
 void TimerWidgets::update()
 {
     QDateTime curr = QDateTime::currentDateTime();
-    int minsToNextHour = 59 - curr.time().minute(),//59-curr.time().minute();
-            secsToNextMinute= 59 - curr.time().second();/*59 - curr.time().second();*/
+    int minsToNextHour = 0x3b - curr.time().minute(),//59-curr.time().minute();
+            secsToNextMinute= 0x3b - curr.time().second();/*59 - curr.time().second();*/
     if (minsToNextHour==0x0 && secsToNextMinute==0x0 && activated){
-        t_sound.start(1500);
+        t_sound.start(0x5dc);/*t_sound.start(1500);*/
     }
     min->display(minsToNextHour);
     secs->display(secsToNextMinute);
