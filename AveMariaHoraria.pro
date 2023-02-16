@@ -16,18 +16,23 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    files.cpp \
     main.cpp \
     mainwidget.cpp \
+    settingswidget.cpp \
     timerwidgets.cpp \
     whatsthisdialog.cpp
 
 HEADERS += \
+    files.h \
     mainwidget.h \
+    settingswidget.h \
     timerwidgets.h \
     whatsthisdialog.h
 
 FORMS += \
     mainwidget.ui \
+    settingswidget.ui \
     whatsthisdialog.ui
 
 TRANSLATIONS += \

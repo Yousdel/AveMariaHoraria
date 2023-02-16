@@ -2,17 +2,28 @@
 #include "ui_mainwidget.h"
 
 #include <QCloseEvent>
+#include <QTime>
 #include "whatsthisdialog.h"
 #include "timerwidgets.h"
+#include "settingswidget.h"
+#include "files.h"
 
 MainWidget::MainWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MainWidget), stop(0x0)
 {
     ui->setupUi(this);
+    w = new SettingsWidget();
+    w->hide();
+
     t = new TimerWidgets(ui->lcdNumber,
                    ui->lcdNumber_2,
-                   this);
+                         ui->label_3,
+                         this);
+    connect(w, &SettingsWidget::saved, [&](){
+        t->updateFromFile();
+    });
+    readAutomatic();
 }
 
 MainWidget::~MainWidget()
@@ -38,7 +49,7 @@ void MainWidget::closeEvent(QCloseEvent *ev)
 
 void MainWidget::on_settings_pushButton_clicked()
 {
-
+    w->show();
 }
 
 void MainWidget::on_begin_pushButton_clicked()
@@ -53,4 +64,11 @@ void MainWidget::on_stop_pushButton_clicked()
     stop=0x1;
     t->disable();
     ui->begin_pushButton->setEnabled(0x1);
+}
+
+void MainWidget::readAutomatic()
+{
+    bool automatic {t->automatic()};
+    ui->begin_pushButton->setEnabled(!automatic);
+    if (automatic) t->activate();
 }

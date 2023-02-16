@@ -3,6 +3,7 @@
 
 #include <QWidget>
 
+class SettingsWidget;
 class TimerWidgets;
 
 namespace Ui {
@@ -30,6 +31,9 @@ private:
     Ui::MainWidget *ui;
     bool stop;
     TimerWidgets *t;
+    SettingsWidget *w;
+
+    void readAutomatic();
 
 protected:
     void closeEvent(QCloseEvent *event) override;
