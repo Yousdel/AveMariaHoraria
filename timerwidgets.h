@@ -7,6 +7,7 @@
 
 class QLCDNumber;
 class QLabel;
+class QSystemTrayIcon;
 
 class TimerWidgets : public QObject
 {
@@ -24,12 +25,14 @@ public:
 private:
     QTime m_from, m_to; bool m_automatic=0x0;
     QLCDNumber *min, *secs; bool activated=0x0;
-    QLabel *m_label;
-    QTimer t, t_sound;
+    QLabel *m_label; QSystemTrayIcon *sysTrIcon {nullptr};
+    QTimer mainTimer, soundTimer;
     int i=0x0;
 
     void update();
 
+private slots:
+    void tryCreateSysTrIcon();
 signals:
 
 };

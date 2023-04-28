@@ -13,15 +13,15 @@ MainWidget::MainWidget(QWidget *parent) :
     ui(new Ui::MainWidget), stop(0x0)
 {
     ui->setupUi(this);
-    w = new SettingsWidget();
-    w->hide();
+    settingsWidget = new SettingsWidget();
+    settingsWidget->hide();
 
-    t = new TimerWidgets(ui->lcdNumber,
-                   ui->lcdNumber_2,
+    timerWidgets = new TimerWidgets(ui->lcdNumber,
+                         ui->lcdNumber_2,
                          ui->label_3,
                          this);
-    connect(w, &SettingsWidget::saved, [&](){
-        t->updateFromFile();
+    connect(settingsWidget, &SettingsWidget::saved, [&](){
+        timerWidgets->updateFromFile();
     });
     readAutomatic();
 }
@@ -44,31 +44,31 @@ void MainWidget::closeEvent(QCloseEvent *ev)
         ev->ignore();
     }
     else
-        t->stopEverything();
+        timerWidgets->stopEverything();
 }
 
 void MainWidget::on_settings_pushButton_clicked()
 {
-    w->show();
+    settingsWidget->show();
 }
 
 void MainWidget::on_begin_pushButton_clicked()
 {
     stop=0x0;
-    t->activate();
+    timerWidgets->activate();
     ui->begin_pushButton->setEnabled(0x0);
 }
 
 void MainWidget::on_stop_pushButton_clicked()
 {
     stop=0x1;
-    t->disable();
+    timerWidgets->disable();
     ui->begin_pushButton->setEnabled(0x1);
 }
 
 void MainWidget::readAutomatic()
 {
-    bool automatic {t->automatic()};
+    bool automatic {timerWidgets->automatic()};
     ui->begin_pushButton->setEnabled(!automatic);
-    if (automatic) t->activate();
+    if (automatic) timerWidgets->activate();
 }

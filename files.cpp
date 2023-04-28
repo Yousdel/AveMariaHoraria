@@ -50,3 +50,31 @@ void Files::readAutoTimes(QTime &from, QTime &to, bool &automatic)
     f.flush();
     f.close();
 }
+
+void Files::saveStartupSelection(bool b)
+{
+    QFile f(QDir::currentPath()+"/startup.txt");
+    if (!f.open(QIODevice::Text | QIODevice::WriteOnly))
+        return;
+    QByteArray content;
+    content.append(QString::number(b));
+    f.write(content);
+    f.flush();
+    f.close();
+}
+
+void Files::readStartupSelection(bool &b)
+{
+    QFile f(QDir::currentPath()+"/startup.txt");
+    if (!f.open(QIODevice::Text | QIODevice::ReadOnly))
+        return;
+    const QByteArray content {
+        f.readAll()
+    };
+    QList<QByteArray> l{
+        content.split('\n')
+    };
+    b = l.at(0x0).toInt();
+    f.flush();
+    f.close();
+}

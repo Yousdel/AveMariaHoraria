@@ -18,8 +18,11 @@ public:
 private slots:
     void on_savePushButton_clicked();
 
+    void on_startupAppCheckBox_clicked();
+
 private:
     Ui::SettingsWidget *ui;
+    void enableSaveButton();
 
 signals:
     void saved();

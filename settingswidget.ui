@@ -146,7 +146,7 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QCheckBox" name="checkBox">
+       <widget class="QCheckBox" name="manualActivateCheckBox">
         <property name="text">
          <string>Activar manualmente</string>
         </property>
@@ -156,6 +156,13 @@
        </widget>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="startupAppCheckBox">
+     <property name="text">
+      <string>Iniciar con el arranque del sistema operativo.</string>
+     </property>
     </widget>
    </item>
    <item>

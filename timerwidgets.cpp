@@ -14,35 +14,38 @@ TimerWidgets::TimerWidgets(QLCDNumber *minNumber,
     min(minNumber), secs(secsNumber), m_label(label)
 {
     updateFromFile();
-    update();
-    connect(&t, &QTimer::timeout, this, [=](){update();});
-    connect(&t_sound, &QTimer::timeout, this,[&](){
+    tryCreateSysTrIcon();
+    connect(&mainTimer, &QTimer::timeout, this, [=](){update();});
+    connect(&soundTimer, &QTimer::timeout, this,[&](){
         ++i;
         m_label->setText("---Decir un Ave María---");
-        QSystemTrayIcon ti(this);
-        ti.showMessage("Mensaje", "Decir un Ave María",QIcon(":/icono.ico"));
+        if (i==0x1)
+            sysTrIcon->showMessage(
+                        "Mensaje",
+                        "Decir un Ave María",
+                        QIcon(":/icono.png"));
         QSound::play(":/Alarm05.wav");
         if (i==0xf){
-            t_sound.stop();
+            soundTimer.stop();
             i=0x0;
         }
     });
-    t.start(0x3e8);/*t.start(1000);*/
 }
 
 void TimerWidgets::stopEverything()
 {
-    t.stop(); disable();
+    mainTimer.stop(); disable();
 }
 
 void TimerWidgets::disable()
 {
-    t_sound.stop(); activated=0x0;
+    soundTimer.stop(); activated=0x0;
 }
 
 void TimerWidgets::activate()
 {
     activated=0x1;
+    mainTimer.start(0x3e8);/*.start(1000);*/
 }
 
 bool TimerWidgets::automatic() const
@@ -52,26 +55,33 @@ bool TimerWidgets::automatic() const
 
 void TimerWidgets::updateFromFile()
 {
-    Files::readAutoTimes(m_from,m_to,m_automatic);
-    if (m_automatic)
-        activate();
+    Files::readAutoTimes(m_from,m_to,m_automatic);    
 }
 
 void TimerWidgets::update()
 {
+    if (!activated) return;
     QDateTime curr = QDateTime::currentDateTime();
     QDate currDate = curr.date();
     if (curr < QDateTime(currDate, m_from) || curr > QDateTime(currDate, m_to))
     {
-        m_label->setText("Desactivado por estar\nfuera del horario.\n(para cambiar vaya a Ajustes)");
+        m_label->setText("Desactivado por estar\nfuera"
+                         " del horario.\n(para cambiar vaya a Ajustes)");
         return;
     }
     m_label->setText("Faltan:");
     int minsToNextHour = 0x3b - curr.time().minute(),//59-curr.time().minute();
             secsToNextMinute= 0x3b - curr.time().second();/*59 - curr.time().second();*/
-    if (minsToNextHour==0x0 && secsToNextMinute==0x0 && activated){
-        t_sound.start(0x5dc);/*t_sound.start(1500);*/
+    if (minsToNextHour==0x0 && secsToNextMinute==0x0){
+        soundTimer.start(0x5dc);/*t_sound.start(1500);*/
     }
     min->display(minsToNextHour);
     secs->display(secsToNextMinute);
+}
+
+void TimerWidgets::tryCreateSysTrIcon()
+{
+    sysTrIcon= new QSystemTrayIcon(this);
+    sysTrIcon->setIcon(QIcon(":/icono.ico"));
+    sysTrIcon->show();
 }

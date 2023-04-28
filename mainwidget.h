@@ -26,14 +26,15 @@ private slots:
     void on_begin_pushButton_clicked();
 
     void on_stop_pushButton_clicked();
+    //----------------------user definitions------------
+    void readAutomatic();
 
 private:
     Ui::MainWidget *ui;
-    bool stop;
-    TimerWidgets *t;
-    SettingsWidget *w;
+    bool stop{false};
+    TimerWidgets *timerWidgets;
+    SettingsWidget *settingsWidget;
 
-    void readAutomatic();
 
 protected:
     void closeEvent(QCloseEvent *event) override;
